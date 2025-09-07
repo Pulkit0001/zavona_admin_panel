@@ -1,0 +1,188 @@
+/* Modern DataTable Styles */
+.modern-datatable {
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.modern-datatable .p-datatable-header {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 1.5rem;
+}
+
+.modern-datatable .p-datatable-thead > tr > th {
+  background: #f8fafc !important;
+  border: none !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 1rem 1.5rem !important;
+}
+
+.modern-datatable .p-datatable-tbody > tr {
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.modern-datatable .p-datatable-tbody > tr:hover {
+  background: #f1f5f9 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.modern-datatable .p-datatable-tbody > tr > td {
+  border: none !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  padding: 1.25rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  color: #475569 !important;
+}
+
+.modern-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background: #fafafa !important;
+}
+
+.modern-datatable .p-datatable-tbody > tr:nth-child(even):hover {
+  background: #f1f5f9 !important;
+}
+
+/* Pagination Styles */
+.modern-datatable .p-paginator {
+  background: #f8fafc !important;
+  border: none !important;
+  border-top: 1px solid #e2e8f0 !important;
+  padding: 1rem 1.5rem !important;
+  border-radius: 0 0 1rem 1rem !important;
+}
+
+.modern-datatable .p-paginator .p-paginator-page,
+.modern-datatable .p-paginator .p-paginator-next,
+.modern-datatable .p-paginator .p-paginator-prev,
+.modern-datatable .p-paginator .p-paginator-first,
+.modern-datatable .p-paginator .p-paginator-last {
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+  border-radius: 0.5rem !important;
+  margin: 0 0.125rem !important;
+  min-width: 2.5rem !important;
+  height: 2.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.modern-datatable .p-paginator .p-paginator-page:hover,
+.modern-datatable .p-paginator .p-paginator-next:hover,
+.modern-datatable .p-paginator .p-paginator-prev:hover,
+.modern-datatable .p-paginator .p-paginator-first:hover,
+.modern-datatable .p-paginator .p-paginator-last:hover {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.modern-datatable .p-paginator .p-paginator-page.p-highlight {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Loading Spinner */
+.modern-datatable .p-datatable-loading-overlay {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Filter Styles */
+.modern-datatable .p-column-filter-menu-button {
+  background: transparent !important;
+  border: none !important;
+  color: #64748b !important;
+  transition: all 0.2s ease !important;
+}
+
+.modern-datatable .p-column-filter-menu-button:hover {
+  background: #f1f5f9 !important;
+  color: #10b981 !important;
+  transform: scale(1.1) !important;
+}
+
+/* Sortable Column Headers */
+.modern-datatable .p-sortable-column:hover {
+  background: #f1f5f9 !important;
+  color: #10b981 !important;
+}
+
+.modern-datatable .p-sortable-column .p-sortable-column-icon {
+  color: #64748b !important;
+  transition: all 0.2s ease !important;
+}
+
+.modern-datatable .p-sortable-column:hover .p-sortable-column-icon {
+  color: #10b981 !important;
+}
+
+/* Custom scrollbar */
+.modern-datatable .p-datatable-wrapper::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.modern-datatable .p-datatable-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.modern-datatable .p-datatable-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modern-datatable .p-datatable-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Employee Table Container */
+.employee-table-container {
+  padding: 0;
+}
+
+/* Custom Button Styles */
+.employee-action-btn {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+}
+
+.employee-action-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.employee-action-btn.edit-btn:hover {
+  background: #dbeafe !important;
+  border-color: #3b82f6 !important;
+  color: #1d4ed8 !important;
+}
+
+.employee-action-btn.view-btn:hover {
+  background: #f3f4f6 !important;
+  border-color: #6b7280 !important;
+  color: #374151 !important;
+}
+
+.employee-action-btn.delete-btn:hover {
+  background: #fee2e2 !important;
+  border-color: #ef4444 !important;
+  color: #dc2626 !important;
+}
