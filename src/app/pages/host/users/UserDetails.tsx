@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getUserDetails } from '../../../../services/user.service';
 import { Tag } from 'primereact/tag';
 import Avatar from '../../../components/common/Avatar';
-import { formatDate } from '../../../../utils/helper.utils';
+import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 interface UserDetailsType {
     name: string;
@@ -89,7 +89,7 @@ const UserDetails: React.FC = () => {
             <div className="bg-white rounded-xl shadow-sm p-6 max-w-3xl mx-auto w-full">
                 <div className="flex  items-center mb-4 pb-6 border-b border-gray-200">
                     <Avatar 
-                        image={userDetails?.profileImage}
+                        image={`${IMAGE_BASE_URL}${userDetails?.profileImage}`}
                         label={""}
                         // size="large"
                         className="mb-2"

@@ -1,11 +1,11 @@
 .input-field {
   height: 48px;
-  border: 2px solid #e5e7eb;
+  border: 1px solid var(--warning-primary);
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 16px;
   transition: all 0.3s ease;
-  background-color: #ffffff;
+  background-color: var(--warning-gradient);
   color: #374151;
   outline: none;
   width: 100%;

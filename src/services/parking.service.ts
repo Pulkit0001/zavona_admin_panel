@@ -27,3 +27,12 @@ export const updateParking = async(parkingId:string , payload:any) => {
         throw error
     }
 }
+
+export const getDocuments = async (fileUrl: string) => {
+    try {
+        const apiRes = await apiService.get(`${Endpoints.GET_DOCUMENTS}/${fileUrl}`, {});
+        return apiRes;
+    } catch (error: any) {
+        throw error
+    }
+}

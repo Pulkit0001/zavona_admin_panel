@@ -5,7 +5,7 @@ import { Tag } from 'primereact/tag';
 import TextFilterTemplate from '../../../components/common/TextFilterTemplate';
 import DateFilterTemplate from '../../../components/common/DateFilterTemplate';
 import StatusFilterTemplate from '../../../components/common/StatusFilterTemplate';
-import { formatDate } from '../../../../utils/helper.utils';
+import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 import { Menu } from 'primereact/menu';
 import Avatar from '../../../components/common/Avatar';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -206,7 +206,7 @@ const UserTable: React.FC<UserTableProps> = ({
         body={(rowData) => (
           rowData?.name ? <div className="flex items-center gap-2">
             <Avatar
-              image={rowData?.profileImage}
+              image={`${IMAGE_BASE_URL}${rowData?.profileImage}`}
               label={rowData?.name}
               size="small"
             />

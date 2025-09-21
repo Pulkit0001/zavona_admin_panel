@@ -13,6 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { InputOtp } from 'primereact/inputotp';
 import VerifyOtp from './VerifyOtp';
 import { useToast } from '../../components/common/useToast';
+import logo from '../../../assets/Vector.png';
+import banner from '../../../assets/main_page.png';
+
 
 interface loginPropTypes {
     email: any,
@@ -20,12 +23,11 @@ interface loginPropTypes {
 }
 
 const Login = () => {
-    const [checked, setChecked] = React.useState(false);
-    // const [password, setPassword] = useState("");
     const [userInfo, setUserInfo] = useState<loginPropTypes>({
         email: "",
         loginType: ""
     });
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
@@ -52,6 +54,7 @@ const Login = () => {
         const { email } = data;
         let payload = {
             purpose: "login",
+            userType: "Admin"
         } as any
 
         if (!email) {
@@ -94,6 +97,7 @@ const Login = () => {
         }
 
         try {
+            setLoading(true);
             const apiRes: any = await sendOtp(payload);
             if (apiRes?.success) {
                 useToast('success', apiRes?.message, '', 3000);
@@ -105,6 +109,9 @@ const Login = () => {
         } catch (error: any) {
             handleErrorMessage(error?.errorMessage, useToast);
         }
+        finally {
+            setLoading(false);
+        }
     }
 
 
@@ -112,20 +119,30 @@ const Login = () => {
         <div className="flex flex-col lg:flex-row h-screen w-full">
             {/* Image section - Top on mobile/tablet, Left on desktop */}
             <div className="w-full lg:w-1/2 h-1/2 lg:h-full bg-gray-100 flex-shrink-0">
-                <img
-                    src="https://cdn.dribbble.com/userupload/13160040/file/still-b2f24280cb97e814f3730e4c3123097e.png?format=webp&resize=400x300&vertical=center"
-                    alt="Login Background"
-                    className="h-full w-full object-cover"
-                />
+                <div className='flex items-center justify-center h-full banner-image-gradient'>
+                    <img
+                        src={banner}
+                        alt="Login Background"
+                        className="  object-cover"
+                    />
+                </div>
+
             </div>
 
             {/* Form section - Bottom on mobile/tablet, Right on desktop */}
-            <div className="w-full lg:w-1/2 h-1/2 lg:h-full overflow-y-auto">
+            <div className="w-full lg:w-1/2 h-1/2 lg:h-full overflow-y-auto text-neutral-900">
                 <div className="flex min-h-full flex-col justify-center px-4 py-6 sm:px-6 lg:px-8">
+                    <div className='pb-12 flex justify-center items-center'>
+                        <img
+                            src={logo}
+                            alt="Zavona Logo"
+                            className={"w-72"}
+                        />
+                    </div>
                     <div className="w-full max-w-md space-y-4 lg:space-y-6 mx-auto">
                         {!userInfo?.email && <div>
-                            <h2 className="text-xl font-semibold">Login</h2>
-                            <p className="mt-1 text-sm text-gray-600">Welcome back! Login with your credentials</p>
+                            <h2 className="text-3xl font-semibold text-neutral-900">Login</h2>
+                            <p className="mt-1 text-sm text-neutral-primary">Welcome back! Login with your credentials</p>
                         </div>}
 
                         {!userInfo?.email ? <form onSubmit={handleSubmit(handleLogin)} className="space-y-3 lg:space-y-4">
@@ -172,7 +189,7 @@ const Login = () => {
                                     Forgot password?
                                 </a>
                             </div> */}
-                            <PrimaryButton label="Login" type="submit" className="w-full" />
+                            <PrimaryButton label="Login" type="submit" disabled={loading} className="w-full" />
                         </form> : <VerifyOtp userInfo={userInfo} />}
                     </div>
                 </div>

@@ -81,7 +81,7 @@ const Dashboard = () => {
             {/* Recent Activity and Overview Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Activity */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-3">
                     <div className="bg-white rounded-xl shadow-md p-6">
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h2>
                         <div className="space-y-4">
@@ -103,11 +103,10 @@ const Dashboard = () => {
                 </div>
 
                 {/* Overview Stats */}
-                <div className="lg:col-span-1">
+                {/* <div className="lg:col-span-1">
                     <div className="bg-white rounded-xl shadow-md p-6">
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">Overview</h2>
                         <div className="space-y-4">
-                            {/* Stats Items */}
                             <div className="p-4 bg-blue-50 rounded-lg">
                                 <div className="flex items-center justify-between mb-2">
                                     <h4 className="text-sm font-medium text-gray-600">Active Users</h4>
@@ -149,7 +148,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

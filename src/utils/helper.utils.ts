@@ -45,3 +45,5 @@ export const getCookie = (name: string) => {
      hour12: true
    });
   }
+
+  export const IMAGE_BASE_URL = "https://zavona-s3-bucket.s3.amazonaws.com/"

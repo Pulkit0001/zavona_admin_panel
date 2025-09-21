@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getBookingDetails } from '../../../../services/booking.service';
 import { Tag } from 'primereact/tag';
 import Avatar from '../../../components/common/Avatar';
-import { formatDate } from '../../../../utils/helper.utils';
+import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 interface BookingDetails {
     id: string;
@@ -87,7 +87,7 @@ const BookingDetails: React.FC = () => {
     const formatPrice = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'INR'
         }).format(amount);
     };
 
@@ -115,18 +115,20 @@ const BookingDetails: React.FC = () => {
         <div className="flex flex-1 flex-col min-h-0 bg-gradient-to-br p-4 overflow-auto">
             <div className="bg-white rounded-xl shadow-sm p-6 max-w-3xl mx-auto w-full">
                 {/* Header with Parking Space Info */}
-                <div className="flex flex-col items-center mb-6 pb-6 border-b border-gray-200">
-                    <Avatar 
-                        image={details?.parkingSpace?.thumbnailUrl}
+                <div className="flex gap-4 items-center mb-6 pb-6 border-b border-gray-200">
+                    <Avatar
+                        image={`${IMAGE_BASE_URL}${details?.parkingSpace?.thumbnailUrl}`}
                         label={details?.parkingSpace?.name}
                         size="large"
-                        className="mb-4"
+                        labelShow={false}
                     />
-                    <h1 className="text-2xl font-semibold mb-2">{details?.parkingSpace?.name}</h1>
-                    <div className="flex gap-2 flex-wrap justify-center">
-                        {getStatusTag(details?.status)}
-                        {details?.isCurrentlyActive && <Tag severity="success" value="Currently Active" />}
-                        {details?.isExpired && <Tag severity="danger" value="Expired" />}
+                    <div>
+                        <h1 className="text-2xl font-semibold mb-2">{details?.parkingSpace?.name}</h1>
+                        <div className="flex gap-2 flex-wrap justify-center">
+                            {getStatusTag(details?.status)}
+                            {details?.isCurrentlyActive && <Tag severity="success" value="Currently Active" />}
+                            {details?.isExpired && <Tag severity="danger" value="Expired" />}
+                        </div>
                     </div>
                 </div>
 
@@ -136,58 +138,60 @@ const BookingDetails: React.FC = () => {
                     <InfoRow label="Society Name" value={details.parkingSpace.areaSocietyName} />
                     <InfoRow label="Address" value={details.parkingSpace.address} />
                     <InfoRow label="Spot Number" value={details.parkingSpot.parkingNumber} />
-                    <InfoRow 
-                        label="Vehicle Types" 
-                        value={details.parkingSpot.parkingSize.map(size => 
+                    <InfoRow
+                        label="Vehicle Types"
+                        value={details.parkingSpot.parkingSize.map(size =>
                             size.charAt(0).toUpperCase() + size.slice(1)
-                        ).join(', ')} 
+                        ).join(', ')}
                     />
 
                     {/* Booking Times */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">Booking Schedule</h2>
                     <InfoRow label="Check In" value={formatDate(details.checkInDateTime)} />
                     <InfoRow label="Check Out" value={formatDate(details.checkOutDateTime)} />
-                    <InfoRow 
-                        label="Duration" 
-                        value={`${details.pricing.duration.days} days, ${details.pricing.duration.hours} hours`} 
+                    <InfoRow
+                        label="Duration"
+                        value={`${details.pricing.duration.days} days, ${details.pricing.duration.hours} hours`}
                     />
-                    
+
                     {/* Pricing Details */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">Pricing Details</h2>
                     <InfoRow label="Rate Type" value={details.pricing.rateType.toUpperCase()} />
                     <InfoRow label="Rate" value={formatPrice(details.pricing.rate)} />
                     <InfoRow label="Platform Fee" value={formatPrice(details.pricing.platformFee)} />
-                    <InfoRow 
-                        label="Total Amount" 
-                        value={<span className="font-semibold">{formatPrice(details.pricing.finalAmount)}</span>} 
+                    <InfoRow
+                        label="Total Amount"
+                        value={<span className="font-semibold">{formatPrice(details.pricing.finalAmount)}</span>}
                     />
 
                     {/* User Information */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">User Information</h2>
-                    <InfoRow 
-                        label="Renter" 
+                    <InfoRow
+                        label="Renter"
                         value={
                             <div className="flex items-center gap-2">
-                                <Avatar 
-                                    image={details.renter.profileImage || undefined}
-                                    label={details.renter.name || details.renter.email}
+                                <Avatar
+                                    image={details?.renter?.profileImage || undefined}
+                                    label={details?.renter?.name || details?.renter?.email}
                                     size="small"
+                                    labelShow={false}
                                 />
-                                <span>{details.renter.name || details.renter.email}</span>
+                                <span>{details?.renter?.name || details?.renter?.email}</span>
                             </div>
-                        } 
+                        }
                     />
-                    <InfoRow 
-                        label="Owner" 
+                    <InfoRow
+                        label="Owner"
                         value={
                             <div className="flex items-center gap-2">
-                                <Avatar 
-                                    label={details.owner.name || details.owner.email}
+                                <Avatar
+                                    label={details?.owner?.name || details?.owner?.email}
                                     size="small"
+                                    labelShow={false}
                                 />
-                                <span>{details.owner.name || details.owner.email}</span>
+                                <span>{details?.owner?.name || details?.owner?.email}</span>
                             </div>
-                        } 
+                        }
                     />
                 </div>
             </div>

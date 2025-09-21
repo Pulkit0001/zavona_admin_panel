@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getParkingDetails } from '../../../../services/parking.service';
+import { getDocuments, getParkingDetails } from '../../../../services/parking.service';
 import { Tag } from 'primereact/tag';
 import { Carousel } from 'primereact/carousel';
 import { Image } from 'primereact/image';
 import Avatar from '../../../components/common/Avatar';
+import { IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 
 interface ParkingSpot {
@@ -55,6 +56,20 @@ const ParkingDetails: React.FC = () => {
                 if (id) {
                     const response: any = await getParkingDetails(id);
                     setParkingDetails(response.data);
+                    let docsArray = [] as any;
+                    await Promise.all(response?.data?.parkingSpace?.images?.map(async (img: string) => {
+                        const doc:any = await getDocuments(img);
+                        if(doc?.success){
+                            docsArray.push(doc?.url);
+                        }
+                    }))
+                    setParkingDetails({
+                        ...response.data,
+                        parkingSpace: {
+                            ...response.data.parkingSpace,
+                            images: docsArray
+                        }
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching parking details:', error);
@@ -87,17 +102,18 @@ const ParkingDetails: React.FC = () => {
     const formatPrice = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'INR'
         }).format(amount);
     };
 
     const imageTemplate = (image: string) => (
+        console.log(image, "=================image"),
         <div className="flex justify-center p-2">
-            <Image 
-                src={image} 
-                alt="Parking Space" 
-                width="400" 
-                height="300" 
+            <Image
+                src={image}
+                alt="Parking Space"
+                width="240"
+                height="240"
                 className="rounded-lg shadow-sm"
                 preview
             />
@@ -109,18 +125,18 @@ const ParkingDetails: React.FC = () => {
         <div className="flex flex-1 flex-col min-h-0 bg-gradient-to-br p-4 overflow-auto">
             <div className="bg-white rounded-xl shadow-sm p-6 max-w-4xl mx-auto w-full">
                 {/* Images Carousel */}
-                <div className="mb-6">
-                    <Carousel 
-                        value={parkingSpace?.images} 
-                        numVisible={1} 
-                        numScroll={1} 
+                <div className="mb-8 h-80">
+                    <Carousel
+                        value={parkingSpace?.images}
+                        numVisible={1}
+                        numScroll={1}
                         itemTemplate={imageTemplate}
                         className="custom-carousel"
                     />
                 </div>
 
                 {/* Main Info */}
-                <div className="mb-6 pb-6 border-b border-gray-200">
+                <div className="mb-6 pb-6 border-b border-gray-200 pt-4">
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <h1 className="text-2xl font-semibold mb-2">{parkingSpace?.name}</h1>
@@ -128,13 +144,13 @@ const ParkingDetails: React.FC = () => {
                             <p className="text-gray-500">{parkingSpace?.address}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                            <Tag 
-                                severity={parkingSpace?.isActive ? 'success' : 'danger'} 
-                                value={parkingSpace?.isActive ? 'Active' : 'Inactive'} 
+                            <Tag
+                                severity={parkingSpace?.isActive ? 'success' : 'danger'}
+                                value={parkingSpace?.isActive ? 'Active' : 'Inactive'}
                             />
-                            <Tag 
-                                severity={parkingSpace?.isVerified ? 'success' : 'warning'} 
-                                value={parkingSpace?.isVerified ? 'Verified' : 'Unverified'} 
+                            <Tag
+                                severity={parkingSpace?.isVerified ? 'success' : 'warning'}
+                                value={parkingSpace?.isVerified ? 'Verified' : 'Unverified'}
                             />
                         </div>
                     </div>
@@ -147,15 +163,15 @@ const ParkingDetails: React.FC = () => {
                         <div key={index} className="bg-gray-50 rounded-lg p-4 mb-4">
                             <div className="flex justify-between items-start mb-3">
                                 <h3 className="text-lg font-medium">Spot {spot.parkingNumber}</h3>
-                                <Tag 
-                                    severity={spot.isAvailable ? 'success' : 'danger'} 
-                                    value={spot.isAvailable ? 'Available' : 'Unavailable'} 
+                                <Tag
+                                    severity={spot.isAvailable ? 'success' : 'danger'}
+                                    value={spot.isAvailable ? 'Available' : 'Unavailable'}
                                 />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-gray-600 mb-2">
-                                        Vehicle Types: {spot.parkingSize.map(size => 
+                                        Vehicle Types: {spot.parkingSize.map(size =>
                                             size.charAt(0).toUpperCase() + size.slice(1)
                                         ).join(', ')}
                                     </p>
@@ -179,10 +195,11 @@ const ParkingDetails: React.FC = () => {
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Owner Information</h2>
                     <div className="flex items-center gap-4">
-                        <Avatar 
+                        <Avatar
                             image={parkingSpace.owner.profileImage || undefined}
-                            label={parkingSpace.owner.name || parkingSpace.owner.email}
                             size="medium"
+                            label={parkingSpace.owner.name}
+                            labelShow={false}
                         />
                         <div>
                             <p className="font-medium">{parkingSpace.owner.name || 'Owner'}</p>

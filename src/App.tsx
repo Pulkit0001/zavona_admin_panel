@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import Layout from './app/components/Layout';
 import Dashboard from './app/pages/host/Dashboard';
 import Users from './app/pages/host/users/Users';
-import { getCookie } from './utils/helper.utils';
+import { getCookie, setCookie } from './utils/helper.utils';
 import React from 'react';
 import { SnackbarProvider } from "notistack";
 import { Path } from './data/path.enum';
@@ -16,12 +16,28 @@ import UserDetails from './app/pages/host/users/UserDetails';
 import ParkingDetails from './app/pages/host/parking/ParkingDetails';
 import PropertyInterestDetails from './app/pages/host/property-interest/PropertyInterestDetails';
 import BookingDetails from './app/pages/host/booking/BookingDetails';
+import { getUserProfile } from './services/user.service';
 
 const AppRoutes = () => {
   const navigate = useNavigate();
+    const token = getCookie('token');
+
+  const fetchUserProfile = async() => {
+    try {
+      const apiRes:any = await getUserProfile();
+      if(apiRes?.success){
+        setCookie("userInfo" , apiRes?.data)
+      }
+    } catch (error) {
+      
+    }
+  }
+
+  React.useEffect(() => {
+    token && fetchUserProfile()
+  },[])
   
   React.useEffect(() => {
-    const token = getCookie('token');
     if (!token) {
       navigate('/login');
     } 
@@ -53,7 +69,6 @@ const App = () => {
   return (
     <Router>
         <SnackbarProvider>
-
       <AppRoutes />
         </SnackbarProvider>
     </Router>

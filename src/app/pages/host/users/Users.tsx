@@ -21,14 +21,7 @@ const Users: React.FC = () => {
         totalUsers: 0,
         usersPerPage: 10
     });
-    const [filters, setFilters] = useState({
-        search: '',
-        status: '',
-        sortBy: '',
-        sortOrder: 'asc'
-    });
     const [searchTerm, setSearchTerm] = useState('');
-    // console.log(pagination , "===========9999999999998888888888");
 
     const fetchUserListing = async (page?: number = 0, searchTerm?: any) => {
         setLoading(true);

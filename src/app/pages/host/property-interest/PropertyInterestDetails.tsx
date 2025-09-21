@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getPropertyInterestDetails } from '../../../../services/property-interest.service';
 import { Tag } from 'primereact/tag';
 import Avatar from '../../../components/common/Avatar';
-import { formatDate } from '../../../../utils/helper.utils';
+import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 interface PropertyInterestDetails {
     interestType: string;
@@ -76,7 +76,7 @@ const PropertyInterestDetails: React.FC = () => {
     const formatPrice = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'INR'
         }).format(amount);
     };
 
@@ -112,44 +112,46 @@ const PropertyInterestDetails: React.FC = () => {
         <div className="flex flex-1 flex-col min-h-0 bg-gradient-to-br p-4 overflow-auto">
             <div className="bg-white rounded-xl shadow-sm p-6 max-w-3xl mx-auto w-full">
                 {/* Header with Interest Type and Status */}
-                <div className="flex flex-col items-center mb-6 pb-6 border-b border-gray-200">
-                    <Avatar 
-                        image={details.parkingSpace.thumbnailUrl}
-                        label={details.parkingSpace.name}
+                <div className="flex gap-4 items-center mb-6 pb-6 border-b border-gray-200">
+                    <Avatar
+                        image={`${IMAGE_BASE_URL}${details?.parkingSpace?.thumbnailUrl}`}
+                        label={details?.parkingSpace?.name}
                         size="large"
-                        className="mb-4"
+                        labelShow={false}
                     />
-                    <h1 className="text-2xl font-semibold mb-2">{details.parkingSpace.name}</h1>
+                    <div>
+                    <h1 className="text-2xl font-semibold mb-2">{details?.parkingSpace?.name}</h1>
                     <div className="flex gap-2 flex-wrap justify-center">
-                        <Tag 
-                            value={getInterestTypeLabel(details.interestType)} 
+                        <Tag
+                            value={getInterestTypeLabel(details?.interestType)}
                             severity="info"
                         />
-                        {getStatusTag(details.status)}
+                        {getStatusTag(details?.status)}
+                    </div>
                     </div>
                 </div>
 
                 <div className="space-y-1">
                     {/* Property Information */}
                     <h2 className="text-lg font-semibold mb-3">Property Information</h2>
-                    <InfoRow label="Society Name" value={details.parkingSpace.areaSocietyName} />
-                    <InfoRow label="Address" value={details.parkingSpace.address} />
-                    <InfoRow label="Parking Number" value={details.parkingSpot.parkingNumber} />
-                    
+                    <InfoRow label="Society Name" value={details?.parkingSpace?.areaSocietyName} />
+                    <InfoRow label="Address" value={details?.parkingSpace?.address} />
+                    <InfoRow label="Parking Number" value={details?.parkingSpot?.parkingNumber} />
+
                     {/* Financial Information */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">Financial Details</h2>
-                    <InfoRow 
-                        label="Original Price" 
-                        value={formatPrice(details.parkingSpot.sellingPrice)} 
+                    <InfoRow
+                        label="Original Price"
+                        value={formatPrice(details?.parkingSpot?.sellingPrice)}
                     />
-                    <InfoRow 
-                        label="Offered Price" 
-                        value={formatPrice(details.offeredPrice)} 
+                    <InfoRow
+                        label="Offered Price"
+                        value={formatPrice(details?.offeredPrice)}
                     />
-                    {details.leaseDurationMonths && (
-                        <InfoRow 
-                            label="Lease Duration" 
-                            value={`${details.leaseDurationMonths} months`} 
+                    {details?.leaseDurationMonths && (
+                        <InfoRow
+                            label="Lease Duration"
+                            value={`${details?.leaseDurationMonths} months`}
                         />
                     )}
 
@@ -159,27 +161,28 @@ const PropertyInterestDetails: React.FC = () => {
                         label="Buyer" 
                         value={
                             <div className="flex items-center gap-2">
-                                <Avatar 
-                                    image={details.buyer.profileImage}
-                                    label={details.buyer.name}
+                                <Avatar
+                                    image={details?.buyer?.profileImage}
+                                    label={details?.buyer?.name}
                                     size="small"
+                                    labelShow={false}
                                 />
-                                <span>{details.buyer.name}</span>
+                                <span>{details?.buyer?.name}</span>
                             </div>
                         } 
                     />
-                    <InfoRow label="Buyer Email" value={details.buyer.email} />
-                    <InfoRow label="Message" value={details.buyerMessage} />
+                    <InfoRow label="Buyer Email" value={details?.buyer?.email} />
+                    <InfoRow label="Message" value={details?.buyerMessage} />
                     
                     {/* Dates */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">Important Dates</h2>
-                    <InfoRow 
-                        label="Expires On" 
-                        value={formatDate(details.expiresAt)} 
+                    <InfoRow
+                        label="Expires On"
+                        value={formatDate(details?.expiresAt)}
                     />
-                    <InfoRow 
-                        label="Created On" 
-                        value={formatDate(details.createdAt)} 
+                    <InfoRow
+                        label="Created On"
+                        value={formatDate(details?.createdAt)}
                     />
                 </div>
             </div>

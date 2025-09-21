@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 
 interface AvatarProps {
     image?: string;
-    label: string;
+    label?: string;
     size?: 'small' | 'medium' | 'large';
     className?: string;
+    onClick?: () => void;
+    labelShow?: boolean;
 }
 
 const Avatar: React.FC<AvatarProps> = ({
     image,
     label,
     size = 'medium',
-    className = ''
+    className = '',
+    onClick,
+    labelShow = true
 }) => {
     const [imageError, setImageError] = useState(false);
 
@@ -42,15 +46,15 @@ const Avatar: React.FC<AvatarProps> = ({
             <div
                 className={`${getSizeClass()} rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold`}
             >
-                {label.charAt(0).toUpperCase()}
+                {label?.charAt(0).toUpperCase()}
             </div>
         );
     };
 
     return (
-        <div className={`flex items-center gap-3 ${className}`}>
+        <div className={`flex items-center gap-3 ${className}`} onClick={onClick && onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
             {renderAvatar()}
-            <span className="font-medium">{label}</span>
+            {labelShow && <span className="font-medium">{label}</span>}
         </div>
     );
 };

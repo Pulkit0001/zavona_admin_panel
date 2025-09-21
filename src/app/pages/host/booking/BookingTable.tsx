@@ -9,6 +9,7 @@ import { FilterMatchMode } from 'primereact/api';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'primereact/menu';
 import { Path } from '../../../../data/path.enum';
+import { IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 interface BookingType {
     id: string;
@@ -94,9 +95,11 @@ const BookingTable: React.FC<BookingTableProps> = ({
     }));
 
     const parkingNumberTemplate = (rowData: any) => (
+        // console.log(`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}` , "`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}`")
+        
         <Avatar
-            image={rowData.thumbnailUrl}
-            label={rowData.parkingNumber}
+            image={`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}`}
+            label={rowData?.parkingNumber}
             size="small"
         />
     );

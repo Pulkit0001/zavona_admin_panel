@@ -3,9 +3,12 @@ export enum Endpoints {
     VERIFY_OTP = 'auth/verify-otp',
     LOGOUT = 'auth/logout',
     GET_USERS = 'users',
+    GET_USER_PROFILE = "auth/me",
     GET_USER_DETAILS = 'users',
     GET_PARKINGS = 'parking',
     GET_BOOKINGS = 'rental-bookings',
-    GET_PROPERTY_INTERESTS = 'property-interests'
+    GET_PROPERTY_INTERESTS = 'property-interests',
+    MEDIA_UPLOAD = "files/upload-url",
+    GET_DOCUMENTS = "files"
 }
   
