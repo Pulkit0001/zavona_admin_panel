@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import InputField from '../input-field/InputField';
 import PrimaryButton from '../primary-button/PrimaryButton';
-import { useForm } from 'react-hook-form';
+import  { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import { mediaUpload, updateUser } from '../../../../services/user.service';
@@ -26,7 +24,7 @@ interface InputFields {
     profilePic: string
 }
 
-const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, onUpdate, setUserData }) => {
+const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, setUserData }) => {
     // const [username, setUsername] = useState(userData?.user?.name || '');
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string>(userData?.user?.profileImage);
@@ -47,15 +45,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
 
     const {
         register,
-        watch,
         handleSubmit,
         formState: { errors },
-        setError,
-        reset,
-        getValues,
-        clearErrors,
-        setValue,
-        trigger
     } = useForm<InputFields>({
         mode: "all",
         defaultValues: {

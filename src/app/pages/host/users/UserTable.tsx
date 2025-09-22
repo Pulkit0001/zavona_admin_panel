@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import TextFilterTemplate from '../../../components/common/TextFilterTemplate';
 import DateFilterTemplate from '../../../components/common/DateFilterTemplate';
-import StatusFilterTemplate from '../../../components/common/StatusFilterTemplate';
 import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 import { Menu } from 'primereact/menu';
 import Avatar from '../../../components/common/Avatar';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Path } from '../../../../data/path.enum';
 import { updateUser } from '../../../../services/user.service';
 
@@ -43,14 +41,13 @@ enum MenuListItem {
 let tableRowMenuOptions: any
 const UserTable: React.FC<UserTableProps> = ({
   users,
-  loading = false,
+  // loading = false,
   onPageChange,
   pagination,
   setUserList
 }) => {
   const navigate = useNavigate();
   const menuRef = React.useRef(null) as any;
-  const [manageMenuList, setManageMenuList] = React.useState() as any;
 
 
 
@@ -78,8 +75,6 @@ const UserTable: React.FC<UserTableProps> = ({
     return <Tag severity={severity} value={value} />;
   };
 
-
-  // console.log(manageMenuList, "=================manageMenuList");
 
   const handleBlockUnblock = async(id: string, isBlocked: boolean) => {
     try {
@@ -152,7 +147,6 @@ const UserTable: React.FC<UserTableProps> = ({
         },
 
       ];
-      setManageMenuList(rowData)
       menuRef?.current?.toggle(event)
     }
     return (

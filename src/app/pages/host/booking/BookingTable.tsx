@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import TextFilterTemplate from '../../../components/common/TextFilterTemplate';
-import StatusFilterTemplate from '../../../components/common/StatusFilterTemplate';
 import Avatar from '../../../components/common/Avatar';
 import { FilterMatchMode } from 'primereact/api';
 import { useNavigate } from 'react-router-dom';
@@ -40,12 +38,11 @@ interface BookingTableProps {
 let tableRowMenuOptions: any
 const BookingTable: React.FC<BookingTableProps> = ({
     bookings = [],
-    loading = false,
+    // loading = false,
     onPageChange,
     pagination
 }) => {
     const menuRef = React.useRef(null) as any;
-    const [manageMenuList, setManageMenuList] = React.useState() as any;
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -130,7 +127,6 @@ const BookingTable: React.FC<BookingTableProps> = ({
     }
 
     const handleMenuClick = (option: any) => {
-        console.log('Menu option clicked:', option, manageMenuList);
         if (option?.menuClickItem === MenuListItem.VIEW_PROFILE) {
             navigate(Path.BOOKING_DETAILS.replace(':id', String(option?.data?.id)))
         }
@@ -169,7 +165,6 @@ const BookingTable: React.FC<BookingTableProps> = ({
                 },
 
             ];
-            setManageMenuList(rowData);
             menuRef?.current?.toggle(event);
         };
         return (
@@ -194,7 +189,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
             filters={filters}
             filterDisplay="row"
             totalRecords={pagination?.totalBookings}
-            loading={loading}
+            // loading={loading}
             onPage={(e) => onPageChange?.(e.page ? e.page + 1 : 1)}
             onFilter={onFilterChange}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
@@ -212,7 +207,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
                 header="Parking Number"
                 body={parkingNumberTemplate}
                 sortable
-                filterElement={TextFilterTemplate}
+                // filterElement={TextFilterTemplate}
                 filterPlaceholder="Search by number"
                 style={{ minWidth: '12rem' }}
             />

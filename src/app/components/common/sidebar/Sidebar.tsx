@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tooltip } from "primereact/tooltip";
 import { removeCookie } from "../../../../utils/helper.utils";
 import logo from "../../../../assets/Vector.png"
 // import { Path } from "../../data/path.enum";

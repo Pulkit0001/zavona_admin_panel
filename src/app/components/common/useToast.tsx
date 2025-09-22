@@ -1,4 +1,3 @@
-import React from "react";
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 enum ToasterType {
     SUCCESS = "success" ,

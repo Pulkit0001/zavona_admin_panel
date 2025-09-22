@@ -5,7 +5,6 @@ import { Tag } from 'primereact/tag';
 import { Carousel } from 'primereact/carousel';
 import { Image } from 'primereact/image';
 import Avatar from '../../../components/common/Avatar';
-import { IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 
 interface ParkingSpot {

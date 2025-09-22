@@ -1,6 +1,8 @@
 // apiService.ts
 
-import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import axios from 'axios';
+import type { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+// ...existing code...
 // import { removeCookie, getCookie } from '../utils/helper.util';
 import { getCookie, removeCookie } from '../utils/helper.utils';
 import { Constants } from '../data/constants';
@@ -12,7 +14,7 @@ console.log(BASE_URL , "BASE_URLBASE_URLBASE_URL");
 
 
 // Define a generic function to handle API requests
-async function request<T>(method: string, endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+async function request<T>(method: string, endpoint: string, data?: any, _config?: AxiosRequestConfig): Promise<T> {
     
     const userToken = getCookie(Constants.USER_TOKEN_COOKIE)
 

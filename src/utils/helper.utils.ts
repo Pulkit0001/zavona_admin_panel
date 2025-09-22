@@ -1,4 +1,4 @@
-export const setCookie = (name: string, value: string, days = 30) => {
+export const setCookie = (name: string, value: string, _days = 30) => {
     localStorage.setItem(name, typeof value == 'string' ? value : JSON.stringify(value))
     // const date = new Date();
     // date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds

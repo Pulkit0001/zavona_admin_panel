@@ -1,5 +1,5 @@
 import { Dropdown } from 'primereact/dropdown';
-import { ColumnFilterElementTemplateOptions } from 'primereact/column';
+import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
 import { useState } from 'react';
 
 const StatusFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {

@@ -1,5 +1,5 @@
 import { Calendar } from 'primereact/calendar';
-import { ColumnFilterElementTemplateOptions } from 'primereact/column';
+import type { ColumnFilterElementTemplateOptions } from 'primereact/column';
 
 const DateFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
     return (

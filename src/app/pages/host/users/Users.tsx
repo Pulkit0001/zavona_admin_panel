@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import UserTable from './UserTable';
 import { getUsers } from '../../../../services/user.service';
-import InputField from '../../../components/common/input-field/InputField';
-import PrimaryButton from '../../../components/common/primary-button/PrimaryButton';
 import UserHeader from '../../../components/common/UserHeader';
 
 interface PaginationState {
@@ -23,7 +21,7 @@ const Users: React.FC = () => {
     });
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchUserListing = async (page?: number = 0, searchTerm?: any) => {
+    const fetchUserListing = async (page: number = 0, searchTerm?: any) => {
         setLoading(true);
         console.log('Fetching users for page:', page);
         try {

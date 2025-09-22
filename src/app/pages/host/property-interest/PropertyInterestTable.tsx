@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import TextFilterTemplate from '../../../components/common/TextFilterTemplate';
-import StatusFilterTemplate from '../../../components/common/StatusFilterTemplate';
 import Avatar from '../../../components/common/Avatar';
 import { FilterMatchMode } from 'primereact/api';
 import { Menu } from 'primereact/menu';
@@ -49,12 +47,11 @@ interface PropertyInterestTableProps {
 let tableRowMenuOptions: any
 const PropertyInterestTable: React.FC<PropertyInterestTableProps> = ({
     propertyInterests = [],
-    loading = false,
+    // loading = false,
     onPageChange,
     pagination
 }) => {
     const menuRef = React.useRef(null) as any;
-    const [manageMenuList, setManageMenuList] = React.useState() as any;
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -157,7 +154,6 @@ const PropertyInterestTable: React.FC<PropertyInterestTableProps> = ({
     }
 
     const handleMenuClick = (option: any) => {
-        console.log('Menu option clicked:', option, manageMenuList);
         if (option?.menuClickItem === MenuListItem.VIEW_PROFILE) {
             navigate(Path.PROPERTY_INTEREST_DETAILS.replace(':id', String(option?.data?.id)))
         }
@@ -196,7 +192,6 @@ const PropertyInterestTable: React.FC<PropertyInterestTableProps> = ({
                 },
 
             ];
-            setManageMenuList(rowData);
             menuRef?.current?.toggle(event);
         };
         return (
@@ -221,7 +216,7 @@ const PropertyInterestTable: React.FC<PropertyInterestTableProps> = ({
             filters={filters}
             filterDisplay="row"
             totalRecords={pagination?.total}
-            loading={loading}
+            // loading={loading}
             onPage={(e) => onPageChange?.(e.page ? e.page + 1 : 1)}
             onFilter={onFilterChange}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"

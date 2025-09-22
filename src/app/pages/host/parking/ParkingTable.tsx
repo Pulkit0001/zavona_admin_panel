@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import TextFilterTemplate from '../../../components/common/TextFilterTemplate';
 import StatusFilterTemplate from '../../../components/common/StatusFilterTemplate';
 import Avatar from '../../../components/common/Avatar';
 import { FilterMatchMode } from 'primereact/api';
@@ -47,14 +46,13 @@ enum MenuListItem {
 let tableRowMenuOptions: any
 const ParkingTable: React.FC<ParkingTableProps> = ({
     parkingList,
-    loading = false,
+    // loading = false,
     onPageChange,
     pagination,
     setParkingList
 }) => {
     const navigate = useNavigate();
     const menuRef = React.useRef(null) as any;
-    const [manageMenuList, setManageMenuList] = React.useState() as any;
 
     const [filters, setFilters] = useState<any>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -91,10 +89,6 @@ const ParkingTable: React.FC<ParkingTableProps> = ({
         const severity = rowData.status === 'active' ? 'success' : 'warning';
         const value = rowData.status === 'active' ? 'Active' : 'Inactive';
         return <Tag severity={severity} value={value} />;
-    };
-
-    const booleanBodyTemplate = (rowData: any, field: string) => {
-        return <Tag severity={rowData[field] ? 'success' : 'danger'} value={rowData[field] ? 'Yes' : 'No'} />;
     };
 
     const parkingNumberTemplate = (rowData: any) => {
@@ -181,7 +175,6 @@ const ParkingTable: React.FC<ParkingTableProps> = ({
                 },
 
             ];
-            setManageMenuList(rowData)
             menuRef?.current?.toggle(event)
         }
         return (

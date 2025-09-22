@@ -1,4 +1,3 @@
-import React from "react";
 // import { CustomDropdown } from "ui-components";
 // import { tableFilters } from "../../data/constants";
 import CustomDropdown from "./CustomDropdown";
@@ -13,7 +12,6 @@ const CreateTableDropdownFilters = (
   iconsList: boolean = false,
   placeholder?: string,
 ) => {
-  // console.log(statuses, "statuses======================================");
   
   return (
     <CustomDropdown

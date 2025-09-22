@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import "./PasswordInput.scss"
 function PasswordInput(props: any) {
     const [viewPassword, setViewPassword] = useState(false);
@@ -19,10 +19,8 @@ function PasswordInput(props: any) {
         setPassword,
         requiredAsteriskStyle,
         label,
-        required,
         placeholder,
         error,
-        setError,
         clearErrors,
         passwordMessage,
         setPasswordMessage,
@@ -30,7 +28,6 @@ function PasswordInput(props: any) {
         systemSettingInfo,
         onBlur,
         maxCharacterValidation = true,
-        ...rest
     } = props;
 
     console.log({ error });
@@ -55,15 +52,15 @@ function PasswordInput(props: any) {
     };
 
 
-    const handleChangePassword = (e) => {
+    const handleChangePassword = (e:any) => {
         setPassword(e.target.value)
         const inputPass = e.target.value;
         if (inputPass > 0) {
             clearErrors(name)
         }
-        var specialCharacter = /[$&+,:;=?@#|'<>.^*()%!-]/g;
-        var upperCaseRegex = /[A-Z]/g;
-        var numbersRegex = /[0-9]/g;
+        // var specialCharacter = /[$&+,:;=?@#|'<>.^*()%!-]/g;
+        // var upperCaseRegex = /[A-Z]/g;
+        // var numbersRegex = /[0-9]/g;
 
         passwordMessage && setPasswordMessage({
             specialCharacterRegex: inputPass?.match(/[$&+,:;=?@#|'<>.^*()%!-]/g)?.length >= SPECIAL_CHARACTER_COUNT?.value,
@@ -160,7 +157,6 @@ function PasswordInput(props: any) {
                                 <div className="flex items-center mr-4">
                                     <i
                                         style={linkStyle4}
-                                        alt="accessleveldisable"
                                         className={passwordMessage?.character ? 'icon-tick-circle' : password ? "icon-close-circle" : 'icon-tick-circle'}
                                     />
                                     <span className="ml-1 text-xs">{MINIMUM_CHARACTER_COUNT.value} characters</span>
@@ -172,7 +168,6 @@ function PasswordInput(props: any) {
                                 <div className="flex items-center mr-4">
                                     <i
                                         style={linkStyle}
-                                        alt="accessleveldisable"
                                         className={passwordMessage?.uppercase ? 'icon-tick-circle' : password ? "icon-close-circle" : 'icon-tick-circle'}
                                     />
                                     <span className="ml-1 text-xs">
@@ -187,7 +182,6 @@ function PasswordInput(props: any) {
                                 <div className="flex items-center mr-4">
                                     <i
                                         style={linkStyle2}
-                                        alt="accessleveldisable"
                                         className={passwordMessage?.number ? 'icon-tick-circle' : password ? "icon-close-circle" : 'icon-tick-circle'}
                                     />
                                     <span className="ml-1 text-xs">
@@ -202,7 +196,6 @@ function PasswordInput(props: any) {
                                 <div className="flex items-center">
                                     <i
                                         style={linkStyle3}
-                                        alt="accessleveldisable"
                                         className={passwordMessage?.specialCharacterRegex ? 'icon-tick-circle' : password ? "icon-close-circle" : 'icon-tick-circle'}
                                     />
                                     <span className="ml-1 text-xs">

@@ -1,16 +1,13 @@
-import React, { use, useState } from 'react';
-import { Checkbox } from 'primereact/checkbox';
-import { Password } from 'primereact/password';
+import { useState } from 'react';
 import InputField from '../../components/common/input-field/InputField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import  {  useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+
 import PrimaryButton from '../../components/common/primary-button/PrimaryButton';
-import PasswordInput from '../../components/common/password-input/PasswordInput';
 import { sendOtp } from '../../../services/login.service';
-import { handleErrorMessage, setCookie } from '../../../utils/helper.utils';
-import { useNavigate } from 'react-router-dom';
-import { InputOtp } from 'primereact/inputotp';
+import { handleErrorMessage } from '../../../utils/helper.utils';
 import VerifyOtp from './VerifyOtp';
 import { useToast } from '../../components/common/useToast';
 import logo from '../../../assets/Vector.png';
@@ -31,16 +28,9 @@ const Login = () => {
 
     const {
         register,
-        watch,
         handleSubmit,
         formState: { errors },
         setError,
-        reset,
-        getValues,
-        clearErrors,
-        setValue,
-        trigger,
-        control
     } = useForm<loginPropTypes>({
         mode: "all",
         defaultValues: {},
