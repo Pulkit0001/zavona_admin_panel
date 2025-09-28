@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 import InputField from '../input-field/InputField';
 import PrimaryButton from '../primary-button/PrimaryButton';
-import  { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import { mediaUpload, updateUser } from '../../../../services/user.service';
@@ -10,6 +10,7 @@ import { ImageType } from '../../../../data/imageType.enum';
 import { handleErrorMessage, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 import { useToast } from '../useToast';
 import SecondaryButton from '../secondary-button/SecondaryButton';
+import { Divider } from 'primereact/divider';
 
 interface ProfileModalProps {
     visible: boolean;
@@ -88,9 +89,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
                 const updateApiRes: any = await updateUser(userData?.user?.id, updateUserPayload)
                 updateApiRes && useToast('success', "Profile updated successfully", '', 3000);
                 onHide();
-                setUserData((prev:any) => {
+                setUserData((prev: any) => {
                     return {
-                        user : {
+                        user: {
                             ...prev?.user,
                             name: data?.userName != userData?.user?.name ? data?.userName : prev?.user?.name,
                             profileImage: updateUserPayload?.profileImage ? updateUserPayload?.profileImage : prev?.user?.profileImage
@@ -103,7 +104,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
         } catch (error: any) {
             handleErrorMessage(error?.errorMessage, useToast);
 
-        }finally{
+        } finally {
             setLoading(false);
         }
 
@@ -111,7 +112,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
 
     return (
         <Dialog header="Edit Profile" visible={visible} style={{ width: '400px' }} onHide={onHide}>
-            <form className="flex flex-col items-center gap-4" onSubmit={handleSubmit(handleSave)}>
+            <form className="flex flex-col items-center " onSubmit={handleSubmit(handleSave)}>
+                <Divider />
                 <div className="relative">
                     <img
                         src={image ? preview : `${IMAGE_BASE_URL}${preview}`}
@@ -126,7 +128,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
                     </div>
                     <input
                         type="file"
-                        // {...register('profilePic')}
                         accept="image/*"
                         name='profilePic'
                         ref={fileInputRef}
@@ -134,7 +135,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
                         onChange={handleImageChange}
                     />
                 </div>
-                <div className="w-full">
+                <div className="w-full p-4">
                     <InputField
                         label="Username"
                         name='userName'
@@ -144,8 +145,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ visible, onHide, userData, 
                         placeholder="Enter your username"
                     />
                 </div>
-                <div className="flex justify-end w-full gap-2 mt-4">
-                    <SecondaryButton disabled={loading} label="Cancel" type="button"  onClick={onHide} />
+                <Divider />
+
+                <div className="flex justify-end w-full gap-2  p-4">
+                    <SecondaryButton disabled={loading} label="Cancel" type="button" onClick={onHide} />
                     <PrimaryButton disabled={loading} loading={loading} label="Save" type="submit" />
                 </div>
             </form>

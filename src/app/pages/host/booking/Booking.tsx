@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BookingTable from './BookingTable';
 import { getBookings } from '../../../../services/booking.service';
 import UserHeader from '../../../components/common/UserHeader';
+import LoadingSkeleton from '../../../components/common/LoadingSkelton';
 
 interface PaginationState {
     currentPage: number;
@@ -51,7 +52,6 @@ const Booking: React.FC = () => {
     };
 
     const handlePageChange = (page: number) => {
-        console.log('Page changed in Bookings component:', page);
         fetchBookings(page, searchTerm);
     };
 
@@ -75,12 +75,13 @@ const Booking: React.FC = () => {
                     />
                 </div>
                 <div className="flex flex-1 flex-col min-h-0 rounded-2xl overflow-auto">
-                    <BookingTable
+                   {
+                        loading ? <LoadingSkeleton /> :   <BookingTable
                         bookings={bookingList}
                         loading={loading}
                         onPageChange={handlePageChange}
                         pagination={pagination}
-                    />
+                    />}
                 </div>
             </div>
         </div>

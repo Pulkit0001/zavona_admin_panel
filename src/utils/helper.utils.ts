@@ -1,3 +1,5 @@
+import { Status } from "../data/status.enum";
+
 export const setCookie = (name: string, value: string, _days = 30) => {
     localStorage.setItem(name, typeof value == 'string' ? value : JSON.stringify(value))
     // const date = new Date();
@@ -45,5 +47,20 @@ export const getCookie = (name: string) => {
      hour12: true
    });
   }
+
+  export function getPendingStatus(status: string) {
+          switch (status) {
+              case Status.PENDING:
+                  return 'kyc needed';
+              case Status.PENDING_APPROVAL:
+                  return 'Kyc pending';
+              case Status.VERIFIED:
+                  return 'Verify';
+              case Status.REJECTED:
+                  return 'Reject';
+              default:
+                  return '';
+          }
+      }
 
   export const IMAGE_BASE_URL = "https://zavona-s3-bucket.s3.amazonaws.com/"

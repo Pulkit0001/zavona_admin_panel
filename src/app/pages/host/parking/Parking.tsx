@@ -3,6 +3,7 @@ import ParkingTable from './ParkingTable';
 // import { getParkingList } from '../../../../services/parking.service';
 import UserHeader from '../../../components/common/UserHeader';
 import { getParkings } from '../../../../services/parking.service';
+import LoadingSkeleton from '../../../components/common/LoadingSkelton';
 
 interface PaginationState {
     page: number;
@@ -54,21 +55,24 @@ const Parking: React.FC = () => {
         <div className="flex flex-1 flex-col min-h-0 bg-gradient-to-br p-4">
             <div className="flex flex-1 flex-col min-h-0">
                 <div className="mb-2">
-                    <UserHeader 
-                        title="Parking" 
-                        setSearchTerm={setSearchTerm} 
+                    <UserHeader
+                        title="Parking"
+                        setSearchTerm={setSearchTerm}
                         handleSearchUser={handleSearch}
                         searchPlaceholder="Search parking spaces..."
                     />
                 </div>
                 <div className="flex flex-1 flex-col min-h-0 rounded-2xl overflow-auto">
-                    <ParkingTable
-                        parkingList={parkingList}
-                        loading={loading}
-                        onPageChange={handlePageChange}
-                        pagination={pagination}
-                        setParkingList={setParkingList}
-                    />
+                    {
+                        loading ? <LoadingSkeleton /> : <ParkingTable
+                            parkingList={parkingList}
+                            loading={loading}
+                            onPageChange={handlePageChange}
+                            pagination={pagination}
+                            setParkingList={setParkingList}
+                        />
+                    }
+
                 </div>
             </div>
         </div>

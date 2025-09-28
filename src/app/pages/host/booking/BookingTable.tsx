@@ -33,6 +33,7 @@ interface BookingTableProps {
     loading?: boolean;
     onPageChange?: (page: number) => void;
     pagination: any;
+    showPagination?: boolean
 }
 
 let tableRowMenuOptions: any
@@ -40,7 +41,8 @@ const BookingTable: React.FC<BookingTableProps> = ({
     bookings = [],
     // loading = false,
     onPageChange,
-    pagination
+    pagination,
+    showPagination= true
 }) => {
     const menuRef = React.useRef(null) as any;
     const navigate = useNavigate();
@@ -183,7 +185,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
     return (
         <DataTable
             value={transformedData}
-            paginator
+            paginator={showPagination}
             rows={pagination?.bookingsPerPage}
             first={(pagination.currentPage - 1) * pagination.bookingsPerPage}
             filters={filters}

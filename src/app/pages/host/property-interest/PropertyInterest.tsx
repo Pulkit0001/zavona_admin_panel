@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getPropertyInterests } from '../../../../services/property-interest.service';
 import UserHeader from '../../../components/common/UserHeader';
 import PropertyInterestTable from './PropertyInterestTable';
+import LoadingSkeleton from '../../../components/common/LoadingSkelton';
 
 interface PaginationState {
     page: number;
@@ -61,12 +62,13 @@ const PropertyInterest: React.FC = () => {
                     />
                 </div>
                 <div className="flex flex-1 flex-col min-h-0 rounded-2xl overflow-auto">
-                    <PropertyInterestTable
+                    {
+                        loading ? <LoadingSkeleton /> :  <PropertyInterestTable
                         propertyInterests={propertyInterests}
                         loading={loading}
                         onPageChange={handlePageChange}
                         pagination={pagination}
-                    />
+                    />}
                 </div>
             </div>
         </div>

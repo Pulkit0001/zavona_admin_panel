@@ -106,7 +106,6 @@ const ParkingDetails: React.FC = () => {
     };
 
     const imageTemplate = (image: string) => (
-        console.log(image, "=================image"),
         <div className="flex justify-center p-2">
             <Image
                 src={image}

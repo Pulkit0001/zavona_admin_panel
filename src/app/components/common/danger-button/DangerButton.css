@@ -1,0 +1,32 @@
+
+@import url('../../../../index.css');
+
+/* PrimaryButton START */
+.danger-button {
+  background:  var(--error-500) ;
+  border: none;
+  padding: 8px 16px;
+  font-weight: normal;
+  box-shadow: none;
+  transition: all 200ms;
+  border-radius: 0.75rem !important;
+  color: var(--neutral-primary);
+  min-width: 6rem;
+}
+
+.danger-button:hover {
+  opacity: 0.85;
+}
+
+.danger-button .p-button-label {
+  font-weight: normal;
+}
+
+.danger-button.p-button.p-button-link {
+  /* color: var(--color-emerald-500); */
+  background-color: transparent;
+  text-decoration: underline;
+  font-weight: bold !important;
+}
+
+/* PrimaryButton END */

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import UserTable from './UserTable';
 import { getUsers } from '../../../../services/user.service';
 import UserHeader from '../../../components/common/UserHeader';
+// import Loader from '../../../components/common/Loader';
+import LoadingSkeleton from '../../../components/common/LoadingSkelton';
 
 interface PaginationState {
     currentPage: number;
@@ -72,13 +74,13 @@ const handleSearchUser = () => {
                     <UserHeader title="Users" setSearchTerm={setSearchTerm} handleSearchUser={handleSearchUser} />
                 </div>
                 <div className="flex flex-1 flex-col min-h-0 rounded-2xl overflow-auto">
-                    <UserTable
+                  { loading ? <LoadingSkeleton  /> : <UserTable
                         users={userList}
                         loading={loading}
                         onPageChange={handlePageChange}
                         pagination={pagination}
                         setUserList={setUserList}
-                    />
+                    />}
                 </div>
             </div>
         </div>

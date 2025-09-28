@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import DateFilterTemplate from '../../../components/common/DateFilterTemplate';
-import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
+import { formatDate, getPendingStatus, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 import { Menu } from 'primereact/menu';
 import Avatar from '../../../components/common/Avatar';
 import { useNavigate } from 'react-router-dom';
 import { Path } from '../../../../data/path.enum';
-import { updateUser } from '../../../../services/user.service';
+import BlockUnblockUserModal from './BlockUnBlockUserModal';
+import { Status } from '../../../../data/status.enum';
 
 interface User {
   id: string;
@@ -20,6 +21,7 @@ interface User {
   createdAt: string;
   updatedAt: string;
   profileImage?: string;
+  kycStatus: string
 }
 
 interface UserTableProps {
@@ -29,7 +31,7 @@ interface UserTableProps {
   totalRecords?: number;
   rows?: number;
   pagination: any;
-  setUserList: (data:any) => void;
+  setUserList: (data: any) => void;
 }
 
 enum MenuListItem {
@@ -48,8 +50,8 @@ const UserTable: React.FC<UserTableProps> = ({
 }) => {
   const navigate = useNavigate();
   const menuRef = React.useRef(null) as any;
-
-
+  const [blockUnblockUserModalVisible, setBlockUnblockUserModalVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const products = Array.isArray(users) ? users?.map(user => {
     // Convert boolean flags to a single status string that matches the filter values
@@ -64,7 +66,10 @@ const UserTable: React.FC<UserTableProps> = ({
       isBlocked: user?.isBlocked || false,
       status: status, // This will match exactly with the filter values from StatusFilterTemplate
       createdAt: user?.createdAt || "-",
-      updatedAt: user?.updatedAt || "-"
+      updatedAt: user?.updatedAt || "-",
+      kycStatus: getPendingStatus(user?.kycStatus),
+      kycStatusType: getPendingStatus(user?.kycStatus)
+
     };
   }) : [];
 
@@ -75,33 +80,23 @@ const UserTable: React.FC<UserTableProps> = ({
     return <Tag severity={severity} value={value} />;
   };
 
-
-  const handleBlockUnblock = async(id: string, isBlocked: boolean) => {
-    try {
-      const apiRes:any = await updateUser(id, { isBlocked: !isBlocked });
-      if(apiRes){
-        let updatedData:any = users?.map((user) => {
-          if(user?.id === id){
-            return {
-              ...user,
-              isBlocked: !isBlocked
-            }
-          }
-          return user;
-        });
-        setUserList(updatedData);
-      }
-    } catch (error) {
-      
-    }
-  }
+  const kycStatusBodyTemplate = (rowData: any) => {
+    if (!rowData) return null;
+    const severity = rowData?.kycStatusType === Status.PENDING_APPROVAL ?
+      'warning' : rowData?.kycStatusType === Status.VERIFIED ?
+        'success' : rowData?.kycStatusType === Status.REJECTED ?
+          'danger' : 'info';
+    const value = rowData?.kycStatus;
+    return value ? <Tag severity={severity} value={value} /> : "-";
+  };
 
   const handleMenuClick = (option: any) => {
     if (option?.menuClickItem === MenuListItem.VIEW_PROFILE) {
       navigate(Path.USERS_DETAILS.replace(':id', String(option?.data?.id)))
     }
     if (option?.menuClickItem === MenuListItem.BLOCK_UNBLOCK) {
-      handleBlockUnblock(option?.data?.id , option?.data?.isBlocked);
+      setSelectedUser(option?.data);
+      setBlockUnblockUserModalVisible(true);
     }
 
   };
@@ -163,107 +158,121 @@ const UserTable: React.FC<UserTableProps> = ({
   };
 
   return (
-    <DataTable
-      value={products}
-      paginator
-      rows={pagination?.usersPerPage}
-      first={(pagination.currentPage - 1) * pagination.usersPerPage}
-      // filters={filters}
-      filterDisplay="row"
-      lazy
-      totalRecords={pagination?.totalUsers}
-      // loading={loading}
-      onPage={(e: any) => {
-        const nextPage = e.page + 1;   // PrimeReact is 0-based
-        onPageChange?.(nextPage);      // 🔹 pass page number, not just e.first
-      }}
-      // onFilter={onFilterChange}
-      globalFilterFields={['name', 'email', 'mobile', 'status']}
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-      emptyMessage="No users found."
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      tableStyle={{ minWidth: "50rem" }}
-      className="p-datatable-sm menu-item-table-hover custom-paginator data-table-fixed-header"
-      pt={{
-        wrapper: {
-          className: "min-h-[200px]"
-        }
-      }}
-    >
-      <Column
-        field="name"
-        header="Name"
-        sortable
-        filterPlaceholder='Search by name'
-        bodyClassName="singleLine"
-        style={{ overflow: "visible", minWidth: "10rem" }}
-        body={(rowData) => (
-          rowData?.name ? <div className="flex items-center gap-2">
-            <Avatar
-              image={`${IMAGE_BASE_URL}${rowData?.profileImage}`}
-              label={rowData?.name}
-              size="small"
-            />
-            {/* <span>{rowData.name}</span> */}
-          </div> : "-"
-        )}
-      />
-      <Column
-        field="email"
-        header="Email"
-        sortable
-        // filter
-        filterPlaceholder='Search by email'
-        bodyClassName="singleLine"
-        style={{ overflow: "visible", minWidth: "8rem" }}
+    <>
+      <DataTable
+        value={products}
+        paginator
+        rows={pagination?.usersPerPage}
+        first={(pagination.currentPage - 1) * pagination.usersPerPage}
+        filterDisplay="row"
+        lazy
+        totalRecords={pagination?.totalUsers}
+        onPage={(e: any) => {
+          const nextPage = e.page + 1;   // PrimeReact is 0-based
+          onPageChange?.(nextPage);      // 🔹 pass page number, not just e.first
+        }}
+        globalFilterFields={['name', 'email', 'mobile', 'status']}
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
+        emptyMessage="No users found."
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        tableStyle={{ minWidth: "50rem" }}
+        className="p-datatable-sm menu-item-table-hover custom-paginator data-table-fixed-header"
+        pt={{
+          wrapper: {
+            className: "min-h-[200px]"
+          }
+        }}
+      >
+        <Column
+          field="name"
+          header="Name"
+          sortable
+          filterPlaceholder='Search by name'
+          bodyClassName="singleLine"
+          style={{ overflow: "visible", minWidth: "10rem" }}
+          body={(rowData) => (
+            rowData?.name ? <div className="flex items-center gap-2">
+              <Avatar
+                image={`${IMAGE_BASE_URL}${rowData?.profileImage}`}
+                label={rowData?.name}
+                size="small"
+              />
+            </div> : "-"
+          )}
+        />
+        <Column
+          field="email"
+          header="Email"
+          sortable
+          // filter
+          filterPlaceholder='Search by email'
+          bodyClassName="singleLine"
+          style={{ overflow: "visible", minWidth: "8rem" }}
 
-      />
-      <Column
-        field="mobile"
-        header="Phone"
-        sortable
-        // filter
-        filterPlaceholder='Search by phone'
-        bodyClassName="singleLine"
-        style={{ overflow: "visible", minWidth: "8rem" }}
+        />
+        <Column
+          field="mobile"
+          header="Phone"
+          sortable
+          // filter
+          filterPlaceholder='Search by phone'
+          bodyClassName="singleLine"
+          style={{ overflow: "visible", minWidth: "8rem" }}
 
-      />
-      <Column
-        field="status"
-        header="Status"
-        sortable
-        showFilterMenu={false}
-        bodyClassName="singleLine"
-        style={{ overflow: "visible", minWidth: "8rem" }}
-        body={statusBodyTemplate}
-      />
-      <Column
-        field="createdAt"
-        header="Created At"
-        sortable
-        showFilterMenu={false}
-        body={(rowData) => formatDate(rowData.createdAt)}
-        style={{ overflow: "visible", minWidth: "12rem" }}
-        bodyClassName="singleLine"
+        />
+        <Column
+          field="status"
+          header="Status"
+          sortable
+          showFilterMenu={false}
+          bodyClassName="singleLine"
+          style={{ overflow: "visible", minWidth: "8rem" }}
+          body={statusBodyTemplate}
+        />
+        <Column
+          field="kycStatus"
+          header="Kyc status"
+          body={kycStatusBodyTemplate}
+          sortable
+          showFilterMenu={false}
+          bodyClassName="singleLine"
+          style={{ overflow: "visible", minWidth: "8rem" }}
+        />
+        <Column
+          field="createdAt"
+          header="Created At"
+          sortable
+          showFilterMenu={false}
+          body={(rowData) => formatDate(rowData.createdAt)}
+          style={{ overflow: "visible", minWidth: "12rem" }}
+          bodyClassName="singleLine"
 
+        />
+        <Column
+          field="updatedAt"
+          header="Updated At"
+          sortable
+          filterElement={DateFilterTemplate}
+          showFilterMenu={false}
+          body={(rowData) => formatDate(rowData.updatedAt)}
+          style={{ overflow: "visible", minWidth: "12rem" }}
+          bodyClassName="singleLine"
+        />
+        <Column
+          field=""
+          header=""
+          className="!w-10"
+          body={renderLastActiveColumn}
+        ></Column>
+      </DataTable>
+      <BlockUnblockUserModal
+        visible={blockUnblockUserModalVisible}
+        onHide={() => setBlockUnblockUserModalVisible(false)}
+        selectedUser={selectedUser}
+        users={users}
+        setUserList={setUserList}
       />
-      <Column
-        field="updatedAt"
-        header="Updated At"
-        sortable
-        filterElement={DateFilterTemplate}
-        showFilterMenu={false}
-        body={(rowData) => formatDate(rowData.updatedAt)}
-        style={{ overflow: "visible", minWidth: "12rem" }}
-        bodyClassName="singleLine"
-      />
-      <Column
-        field=""
-        header=""
-        className="!w-10"
-        body={renderLastActiveColumn}
-      ></Column>
-    </DataTable>
+    </>
   );
 
 

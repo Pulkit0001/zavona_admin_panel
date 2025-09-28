@@ -62,21 +62,21 @@ const Sidebar: React.FC<{ isCollapsed: boolean }> = ({
             path: '/users',
             // badge: '5'
         },
-          {
+        {
             label: 'Parkings',
-            icon: 'pi pi-users',
+            icon: 'pi pi-car',
             path: '/parkings',
             // badge: '5'
         },
-          {
+        {
             label: 'Bookings',
-            icon: 'pi pi-users',
+            icon: 'pi pi-calendar',
             path: '/bookings',
             // badge: '5'
         },
-          {
+        {
             label: 'Property Interests',
-            icon: 'pi pi-users',
+            icon: 'pi pi-home',
             path: '/property-interests',
             // badge: '5'
         },

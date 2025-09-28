@@ -1,8 +1,58 @@
+import React, { useState } from "react";
+import BookingTable from "./booking/BookingTable";
+import { getBookings } from "../../../services/booking.service";
+import { useNavigate } from "react-router-dom";
+import { Path } from "../../../data/path.enum";
+
+interface PaginationState {
+    currentPage: number;
+    totalPages: number;
+    totalBookings: number;
+    bookingsPerPage: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+    nextPage: number | null;
+    prevPage: number | null;
+}
 
 const Dashboard = () => {
-//       React.useEffect(() => {
-//     useToast("success" , "Welcome to the Dashboard" , "" , 3000)
-//   }, []);
+    const navigate = useNavigate();
+    const [bookingList, setBookingList] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [pagination, setPagination] = useState<PaginationState>({
+        currentPage: 1,
+        totalPages: 0,
+        totalBookings: 0,
+        bookingsPerPage: 10,
+        hasNextPage: false,
+        hasPrevPage: false,
+        nextPage: null,
+        prevPage: null
+    });
+
+    const fetchBookings = async (page: number = 1, searchTerm?: string) => {
+        setLoading(true);
+        try {
+            const response: any = await getBookings(
+                page,
+                5,
+                searchTerm
+            );
+            if (response?.success) {
+                setBookingList(response.bookings);
+                setPagination(response.pagination);
+            }
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchBookings();
+    }, []);
+
     return (
         <div className="p-6">
             {/* Statistics Cards */}
@@ -28,11 +78,11 @@ const Dashboard = () => {
                 <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="text-gray-500 text-sm font-medium">Revenue</h3>
+                            <h3 className="text-gray-500 text-sm font-medium">Bookings</h3>
                             <p className="text-2xl font-bold text-gray-800">$42,890</p>
                         </div>
                         <div className="p-3 bg-green-50 rounded-lg">
-                            <i className="pi pi-dollar text-xl text-green-500"></i>
+                            <i className="pi pi-calendar text-xl text-green-500"></i>
                         </div>
                     </div>
                     <div className="flex items-center">
@@ -45,11 +95,11 @@ const Dashboard = () => {
                 <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="text-gray-500 text-sm font-medium">Orders</h3>
+                            <h3 className="text-gray-500 text-sm font-medium">Parkings</h3>
                             <p className="text-2xl font-bold text-gray-800">1,235</p>
                         </div>
                         <div className="p-3 bg-purple-50 rounded-lg">
-                            <i className="pi pi-shopping-cart text-xl text-purple-500"></i>
+                            <i className="pi pi-car text-xl text-purple-500"></i>
                         </div>
                     </div>
                     <div className="flex items-center">
@@ -62,11 +112,11 @@ const Dashboard = () => {
                 <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="text-gray-500 text-sm font-medium">Growth</h3>
+                            <h3 className="text-gray-500 text-sm font-medium">Property interests</h3>
                             <p className="text-2xl font-bold text-gray-800">12.5%</p>
                         </div>
                         <div className="p-3 bg-orange-50 rounded-lg">
-                            <i className="pi pi-chart-line text-xl text-orange-500"></i>
+                            <i className="pi pi-home text-xl text-orange-500"></i>
                         </div>
                     </div>
                     <div className="flex items-center">
@@ -81,10 +131,21 @@ const Dashboard = () => {
                 {/* Recent Activity */}
                 <div className="lg:col-span-3">
                     <div className="bg-white rounded-xl shadow-md p-6">
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h2>
+                        <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-semibold text-gray-800 ">Recent Bookings</h2>
+                       {pagination?.totalBookings > 5 ? <h2 className="text-sm text-blue-500 cursor-pointer" onClick={() => navigate(Path.BOOKINGS)}>View More</h2> : ""} 
+                       </div>
                         <div className="space-y-4">
                             {/* Activity Items */}
-                            {[1, 2, 3, 4].map((item) => (
+
+                            <BookingTable
+                                bookings={bookingList}
+                                loading={loading}
+                                pagination={pagination}
+                                showPagination = {false}
+                            />
+
+                            {/* {[1, 2, 3, 4].map((item) => (
                                 <div key={item} className="flex items-center p-4 bg-gray-50 rounded-lg">
                                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                                         <i className="pi pi-user text-blue-500"></i>
@@ -95,7 +156,7 @@ const Dashboard = () => {
                                     </div>
                                     <span className="text-xs text-gray-400">2 min ago</span>
                                 </div>
-                            ))}
+                            ))} */}
                         </div>
                     </div>
                 </div>

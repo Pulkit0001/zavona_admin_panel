@@ -1,0 +1,32 @@
+
+@import url('../../../../index.css');
+
+/* PrimaryButton START */
+.success-button {
+  background:  var(--emerald-500) ;
+  border: none;
+  padding: 8px 16px;
+  font-weight: normal;
+  box-shadow: none;
+  transition: all 200ms;
+  border-radius: 0.75rem !important;
+  color: var(--neutral-primary);
+  min-width: 6rem;
+}
+
+.success-button:hover {
+  opacity: 0.85;
+}
+
+.success-button .p-button-label {
+  font-weight: normal;
+}
+
+.success-button.p-button.p-button-link {
+  /* color: var(--color-emerald-500); */
+  background-color: transparent;
+  text-decoration: underline;
+  font-weight: bold !important;
+}
+
+/* PrimaryButton END */
