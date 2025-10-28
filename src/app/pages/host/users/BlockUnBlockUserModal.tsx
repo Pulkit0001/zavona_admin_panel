@@ -37,7 +37,7 @@ const BlockUnblockUserModal: React.FC<ProfileModalProps> = ({ visible, onHide, u
                 });
                 setUserList(updatedData);
                 onHide();
-                useToast("success" ,  `User ${selectedUser?.isBlocked ? 'Unblocked' : 'Blocked'} successfully` , "" , 3000);
+                useToast("success", `User ${selectedUser?.isBlocked ? 'Unblocked' : 'Blocked'} successfully`, "", 3000);
             }
         } catch (error: any) {
             handleErrorMessage(error?.errorMessage, useToast);
@@ -61,7 +61,7 @@ const BlockUnblockUserModal: React.FC<ProfileModalProps> = ({ visible, onHide, u
                 {/* Footer Buttons */}
                 <div className="flex justify-end w-full gap-2 px-6 py-4">
                     <SecondaryButton disabled={loading} label="Cancel" type="button" onClick={onHide} />
-                    {selectedUser?.isBlocked ? 
+                    {selectedUser?.isBlocked ?
                         <SuccessButton disabled={loading} loading={loading} onClick={handleBlockUnblock} label="Unblock" type="button" /> :
                         <DangerButton disabled={loading} loading={loading} onClick={handleBlockUnblock} label="Block" type="button" />
                     }

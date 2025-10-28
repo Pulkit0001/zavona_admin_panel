@@ -9,6 +9,9 @@ export enum Endpoints {
     GET_BOOKINGS = 'rental-bookings',
     GET_PROPERTY_INTERESTS = 'property-interests',
     MEDIA_UPLOAD = "files/upload-url",
-    GET_DOCUMENTS = "files"
+    GET_DOCUMENTS = "files",
+    PAYMENT_REFUND = 'payment/refund',
+    GET_DASHBOARD_COUNT = "admin/counts",
+    CUSTOMER_SUPPORT = 'customer-support'
 }
   

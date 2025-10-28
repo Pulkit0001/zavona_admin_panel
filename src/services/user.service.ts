@@ -46,4 +46,13 @@ export const mediaUpload = async(payload:any) => {
     }
 }
 
+export const getDashBoardCount = async() => {
+    try {
+        const apiRes= await apiService.get(`${Endpoints.GET_DASHBOARD_COUNT}`);
+        return apiRes;
+    } catch (error:any) {
+        throw error
+    }
+}
+
 

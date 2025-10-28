@@ -7,7 +7,7 @@ import { FilterMatchMode } from 'primereact/api';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'primereact/menu';
 import { Path } from '../../../../data/path.enum';
-import { IMAGE_BASE_URL } from '../../../../utils/helper.utils';
+import { capitalizeFirstLetter, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
 
 interface BookingType {
     id: string;
@@ -42,7 +42,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
     // loading = false,
     onPageChange,
     pagination,
-    showPagination= true
+    showPagination = true
 }) => {
     const menuRef = React.useRef(null) as any;
     const navigate = useNavigate();
@@ -95,7 +95,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
 
     const parkingNumberTemplate = (rowData: any) => (
         // console.log(`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}` , "`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}`")
-        
+
         <Avatar
             image={`${IMAGE_BASE_URL}${rowData?.thumbnailUrl}`}
             label={rowData?.parkingNumber}
@@ -113,13 +113,15 @@ const BookingTable: React.FC<BookingTableProps> = ({
             confirmed: { severity: 'success', label: 'Confirmed' },
             cancelled: { severity: 'danger', label: 'Cancelled' },
             completed: { severity: 'info', label: 'Completed' },
-            in_progress: { severity: 'info', label: 'In Progress' }
+            in_progress: { severity: 'warning', label: 'In Progress' },
+            checked_out: { severity: 'info', label: 'Checked Out' },
+            checked_in: { severity: 'success', label: 'Checked In' },
+            payment_completed: { severity: 'success', label: 'Payment Completed' }
         };
-
         const status = statusConfig[rowData.status] ||
             { severity: 'warning' as StatusSeverity, label: rowData.status };
 
-        return <Tag severity={status.severity} value={status.label} />;
+        return <Tag severity={status.severity} value={capitalizeFirstLetter(status?.label?.split("_")?.join(" "))} />;
     };
 
     enum MenuListItem {
@@ -172,7 +174,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
         return (
             <div className="relative cursor-pointer w-5">
                 <div
-                    className="bg-white menubar-blur p-datatable-hover absolute -top-4 -right-1 rounded-lg"
+                    className="bg-white menubar-blur p-datatable-hover absolute  -top-4 -right-1  rounded-lg  "
                     onClick={(event) => handleToggleMenu(event)}
                 >
                     <i className="pi pi-ellipsis-h p-2" style={{ fontSize: '1rem' }}></i>
@@ -183,6 +185,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
     };
 
     return (
+        
         <DataTable
             value={transformedData}
             paginator={showPagination}
@@ -197,7 +200,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
             emptyMessage="No bookings found."
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            className="p-datatable-sm custom-paginator data-table-fixed-header"
+            className="p-datatable-sm custom-paginator data-table-fixed-header menu-item-table-hover"
             pt={{
                 wrapper: {
                     className: "min-h-[200px]"

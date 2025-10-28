@@ -1,0 +1,124 @@
+/* TextArea Field Styles */
+.textarea-field-container {
+  position: relative;
+  width: 100%;
+}
+
+.textarea-field-container .textarea-field {
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: all 0.2s ease-in-out;
+}
+
+.textarea-field-container .textarea-field:focus {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+  transform: translateY(-1px);
+}
+
+.textarea-field-container .textarea-field.error:focus {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.textarea-field-container .textarea-field:disabled {
+  opacity: 0.6;
+}
+
+.textarea-field-container .textarea-field::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.textarea-field-container .textarea-field:focus::placeholder {
+  color: #d1d5db;
+}
+
+/* Scrollbar Styling */
+.textarea-field-container .textarea-field::-webkit-scrollbar {
+  width: 8px;
+}
+
+.textarea-field-container .textarea-field::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.textarea-field-container .textarea-field::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.textarea-field-container .textarea-field::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus Animation */
+.textarea-field-container .textarea-field {
+  position: relative;
+}
+
+.textarea-field-container .textarea-field:focus {
+  animation: focusGlow 0.3s ease-out;
+}
+
+@keyframes focusGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+  }
+}
+
+/* Error State Animation */
+.textarea-field-container .textarea-field.error {
+  animation: errorShake 0.3s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* Label Animation */
+.textarea-field-container label {
+  transition: color 0.2s ease;
+}
+
+.textarea-field-container:focus-within label {
+  color: #059669;
+}
+
+.textarea-field-container.error label {
+  color: #dc2626;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .textarea-field-container .textarea-field {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .textarea-field-container .textarea-field {
+  background: var(--warning-gradient);
+  color: #f9fafb;
+  border: 1px solid var(--warning-primary);
+  }
+  
+  .textarea-field-container .textarea-field:focus {
+    border-color: #10b981;
+  }
+  
+  .textarea-field-container .textarea-field::placeholder {
+    color: #9ca3af;
+  }
+}

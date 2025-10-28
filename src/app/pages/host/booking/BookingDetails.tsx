@@ -4,6 +4,10 @@ import { getBookingDetails } from '../../../../services/booking.service';
 import { Tag } from 'primereact/tag';
 import Avatar from '../../../components/common/Avatar';
 import { formatDate, IMAGE_BASE_URL } from '../../../../utils/helper.utils';
+import RefundModal from './RefundModal';
+import { getDocuments } from '../../../../services/parking.service';
+import PrimaryButton from '../../../components/common/primary-button/PrimaryButton';
+import { Status } from '../../../../data/status.enum';
 
 interface BookingDetails {
     id: string;
@@ -17,6 +21,7 @@ interface BookingDetails {
         totalAmount: number;
         finalAmount: number;
         platformFee: number;
+        gstAmount?: number;
     };
     status: string;
     parkingSpace: {
@@ -44,27 +49,59 @@ interface BookingDetails {
     isExpired: boolean;
     isCheckInOverdue: boolean;
     isCheckOutOverdue: boolean;
+    invoiceUrl: string
+    invoices?: Array<{
+        _id: string;
+        invoiceStatus: string;
+        bookingId: string;
+        payerId: string;
+        recipientId: string;
+        grossAmount: number;
+        platformFee: number;
+        invoiceFileKey: string;
+        netPayout: number;
+        dueDate: string;
+        invoiceId: string;
+        createdAt: string;
+        updatedAt: string;
+        paidAt?: string;
+        paymentId?: string;
+    }>;
 }
 
 const BookingDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [details, setDetails] = useState<BookingDetails | null>(null);
     const [loading, setLoading] = useState(true);
+    const [visible, setVisible] = React.useState(false)
+
+    const fetchDetails = async () => {
+        try {
+            if (id) {
+                const response: any = await getBookingDetails(id);
+                let invoiceUrl: any
+                await Promise.all(response?.data?.invoices?.map(async (img: any) => {
+                    const doc: any = await getDocuments(img?.invoiceFileKey);
+                    if (doc?.success) {
+                        console.log(doc?.url);
+
+                        invoiceUrl = doc?.url
+                    }
+                }))
+                console.log(invoiceUrl);
+                setDetails({
+                    ...response.data,
+                    invoiceUrl
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching booking details:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchDetails = async () => {
-            try {
-                if (id) {
-                    const response: any = await getBookingDetails(id);
-                    setDetails(response.data);
-                }
-            } catch (error) {
-                console.error('Error fetching booking details:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchDetails();
     }, [id]);
 
@@ -115,6 +152,10 @@ const BookingDetails: React.FC = () => {
         <div className="flex flex-1 flex-col min-h-0 bg-gradient-to-br p-4 overflow-auto">
             <div className="bg-white rounded-xl shadow-sm p-6 max-w-3xl mx-auto w-full">
                 {/* Header with Parking Space Info */}
+                <div className='flex justify-between items-center mb-4'>
+                    <h2 className='text-lg font-semibold'>Booking details</h2>
+                    {(details?.status == Status.CANCELLED && details?.invoices?.[0]?.invoiceStatus == Status.PAID) ? <PrimaryButton label="Refund" onClick={() => setVisible(true)} className="h-auto" /> : ""}
+                </div>
                 <div className="flex gap-4 items-center mb-6 pb-6 border-b border-gray-200">
                     <Avatar
                         image={`${IMAGE_BASE_URL}${details?.parkingSpace?.thumbnailUrl}`}
@@ -131,7 +172,6 @@ const BookingDetails: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="space-y-1">
                     {/* Parking Information */}
                     <h2 className="text-lg font-semibold mb-3">Parking Information</h2>
@@ -159,10 +199,36 @@ const BookingDetails: React.FC = () => {
                     <InfoRow label="Rate Type" value={details.pricing.rateType.toUpperCase()} />
                     <InfoRow label="Rate" value={formatPrice(details.pricing.rate)} />
                     <InfoRow label="Platform Fee" value={formatPrice(details.pricing.platformFee)} />
-                    <InfoRow
-                        label="Total Amount"
-                        value={<span className="font-semibold">{formatPrice(details.pricing.finalAmount)}</span>}
-                    />
+                    <InfoRow label="GST Amount" value={formatPrice(details.pricing.gstAmount || 0)} />
+                    <InfoRow label="Total Amount" value={<span className="font-semibold">{formatPrice(details.pricing.finalAmount)}</span>} />
+
+                    {/* Invoice Details */}
+                    {details?.invoices && details?.invoices?.length > 0 && (
+                        <div className="mt-6">
+                            <h2 className="text-lg font-semibold mb-3">Invoice Details</h2>
+                            {details.invoices.map((invoice: any) => (
+                                <div key={invoice._id} className="border rounded-lg p-4 mb-4 bg-gray-50">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                                        <div>Gross Amount: <span className="font-semibold">{formatPrice(invoice.grossAmount)}</span></div>
+                                        <div>Platform Fee: {formatPrice(invoice.platformFee)}</div>
+                                        <div>Net Payout: {formatPrice(invoice.netPayout)}</div>
+                                        <div>Due Date: {formatDate(invoice.dueDate)}</div>
+                                        <div>Status: <Tag severity={invoice.invoiceStatus === 'paid' ? 'success' : 'warning'} value={invoice.invoiceStatus === 'paid' ? 'Paid' : 'Unpaid'} /></div>
+                                    </div>
+                                    <div className="mt-2">
+                                        <a
+                                            href={`${details?.invoiceUrl}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-600 underline text-sm font-medium"
+                                        >
+                                            View Invoice Document
+                                        </a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {/* User Information */}
                     <h2 className="text-lg font-semibold mb-3 mt-6">User Information</h2>
@@ -195,6 +261,12 @@ const BookingDetails: React.FC = () => {
                     />
                 </div>
             </div>
+            <RefundModal
+                visible={visible}
+                onHide={() => setVisible(false)}
+                bookingDetails={details}
+                fetchDetails={fetchDetails}
+            />
         </div>
     );
 };

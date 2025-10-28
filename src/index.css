@@ -700,4 +700,8 @@ div.h-6 {
   padding: 0 !important;
 }
 
+.p-divider.p-divider-horizontal{
+  margin: 0px !important ;
+}
+
 /* Modal CSS END  */

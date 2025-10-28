@@ -80,7 +80,7 @@ const VerifyKycDocumentsModal: React.FC<ProfileModalProps> = ({ visible, onHide,
             handleErrorMessage(error?.errorMessage, useToast);
 
         } finally {
-            setLoading(false);
+            setLoading(false)
             reset()
         }
 
@@ -90,7 +90,8 @@ const VerifyKycDocumentsModal: React.FC<ProfileModalProps> = ({ visible, onHide,
         <Dialog header="Kyc Verification" visible={visible} style={{ width: '400px' }} onHide={onHide}>
             <form className="flex flex-col " onSubmit={handleSubmit(handleVerifyRejectKyc)}>
                 <Divider />
-                <div className="flex flex-col gap-4 px-4 py-4">
+                <div className="flex flex-col gap-4 px-4 
+                ">
                     {selectedUser?.type === parkingType.VERIFIED &&
                         <div className="">
                             Are you sure you want to verify these Documents?

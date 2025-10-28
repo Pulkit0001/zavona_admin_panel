@@ -58,6 +58,8 @@ const ParkingTable: React.FC<ParkingTableProps> = ({
     const navigate = useNavigate();
     const menuRef = React.useRef(null) as any;
     const [visible, setVisible] = useState(false);
+
+   
     const [selectedParking, setSelectedParking] = useState<any>(null);
     const [filters, setFilters] = useState<any>({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -181,7 +183,7 @@ const ParkingTable: React.FC<ParkingTableProps> = ({
                 >
                     <i className="pi pi-ellipsis-h p-2" style={{ fontSize: '1rem' }}></i>
                 </div>
-                <Menu model={createMenuItems} popup ref={menuRef} className="menu-list-items !w-52" />
+                <Menu  model={createMenuItems} popup ref={menuRef} className="menu-list-items !w-52" />
             </div>
         );
     };

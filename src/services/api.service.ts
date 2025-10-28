@@ -10,8 +10,6 @@ import { ApiStatus } from '../data/api-status.enum';
 import { Path } from '../data/path.enum';
 
 const BASE_URL = import.meta.env.VITE_API_URL; // Your API base URL
-console.log(BASE_URL , "BASE_URLBASE_URLBASE_URL");
-
 
 // Define a generic function to handle API requests
 async function request<T>(method: string, endpoint: string, data?: any, _config?: AxiosRequestConfig): Promise<T> {
@@ -29,7 +27,6 @@ async function request<T>(method: string, endpoint: string, data?: any, _config?
     // }
    
     try {
-      console.log(`${BASE_URL}${endpoint}`,);
       const response: AxiosResponse<T> = await axios.request<T>({
       method,
       url: `${BASE_URL}${endpoint}`,

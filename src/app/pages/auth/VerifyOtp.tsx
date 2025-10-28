@@ -12,7 +12,7 @@ const VerifyOtp = (props: any) => {
     const { userInfo } = props;
     const [otp, setOtp] = useState('');
     const [errorMessage, setErrorMessage] = useState(false);
-const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const handleVerifyOtp = async () => {
         setLoading(true);
         if (String(otp)?.length != 6) {
@@ -23,7 +23,8 @@ const [loading, setLoading] = useState(false);
             const payload = {
                 identifier: userInfo?.email,
                 otpCode: otp,
-                purpose: "login"
+                purpose: "login",
+                userType: "admin"
             }
             const apiRes: any = await verifyOtp(payload);
             if (apiRes?.success) {
@@ -43,7 +44,7 @@ const [loading, setLoading] = useState(false);
         } catch (error: any) {
             handleErrorMessage(error?.errorMessage, useToast);
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
@@ -74,7 +75,7 @@ const [loading, setLoading] = useState(false);
                     integerOnly />
             </div>
             <div className="mt-4">
-                <PrimaryButton label="Verify" onClick={handleVerifyOtp} className="w-full" disabled={loading}/>
+                <PrimaryButton label="Verify" onClick={handleVerifyOtp} className="w-full" disabled={loading} />
             </div>
         </div>
     );

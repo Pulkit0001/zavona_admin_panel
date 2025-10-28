@@ -12,6 +12,7 @@
   border-radius: 0.75rem !important;
   color: var(--neutral-primary);
   min-width: 6rem;
+  cursor: pointer;
 }
 
 .danger-button:hover {

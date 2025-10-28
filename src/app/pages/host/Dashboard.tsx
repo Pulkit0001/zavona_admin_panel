@@ -3,6 +3,7 @@ import BookingTable from "./booking/BookingTable";
 import { getBookings } from "../../../services/booking.service";
 import { useNavigate } from "react-router-dom";
 import { Path } from "../../../data/path.enum";
+import { getDashBoardCount } from "../../../services/user.service";
 
 interface PaginationState {
     currentPage: number;
@@ -15,10 +16,18 @@ interface PaginationState {
     prevPage: number | null;
 }
 
+interface DashboardData {
+    totalUsers: number;
+    totalBookings: number;
+    totalParkingSpaces: number;
+    totalPlatformFee: number;
+}
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const [bookingList, setBookingList] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
+    const [dashboardData , setDasBoardData] = React.useState<DashboardData | null>(null);
     const [pagination, setPagination] = useState<PaginationState>({
         currentPage: 1,
         totalPages: 0,
@@ -49,8 +58,20 @@ const Dashboard = () => {
         }
     };
 
+     const fetchDashboardCounts = async () => {
+            try {
+                const response: any = await getDashBoardCount()
+                if (response?.success) {
+                    setDasBoardData(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+            } 
+        };
+
     React.useEffect(() => {
         fetchBookings();
+        fetchDashboardCounts()
     }, []);
 
     return (
@@ -62,15 +83,11 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <h3 className="text-gray-500 text-sm font-medium">Total Users</h3>
-                            <p className="text-2xl font-bold text-gray-800">2,546</p>
+                            <p className="text-2xl font-bold text-gray-800">{dashboardData?.totalUsers || 0}</p>
                         </div>
                         <div className="p-3 bg-blue-50 rounded-lg">
                             <i className="pi pi-users text-xl text-blue-500"></i>
                         </div>
-                    </div>
-                    <div className="flex items-center">
-                        <span className="text-green-500 text-sm font-medium">+16%</span>
-                        <span className="text-gray-400 text-sm ml-2">from last month</span>
                     </div>
                 </div>
 
@@ -79,16 +96,13 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <h3 className="text-gray-500 text-sm font-medium">Bookings</h3>
-                            <p className="text-2xl font-bold text-gray-800">$42,890</p>
+                            <p className="text-2xl font-bold text-gray-800">{dashboardData?.totalBookings || 0}</p>
                         </div>
                         <div className="p-3 bg-green-50 rounded-lg">
                             <i className="pi pi-calendar text-xl text-green-500"></i>
                         </div>
                     </div>
-                    <div className="flex items-center">
-                        <span className="text-green-500 text-sm font-medium">+8%</span>
-                        <span className="text-gray-400 text-sm ml-2">from last month</span>
-                    </div>
+                    
                 </div>
 
                 {/* Orders Card */}
@@ -96,15 +110,11 @@ const Dashboard = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <h3 className="text-gray-500 text-sm font-medium">Parkings</h3>
-                            <p className="text-2xl font-bold text-gray-800">1,235</p>
+                            <p className="text-2xl font-bold text-gray-800">{dashboardData?.totalParkingSpaces || 0}</p>
                         </div>
                         <div className="p-3 bg-purple-50 rounded-lg">
                             <i className="pi pi-car text-xl text-purple-500"></i>
                         </div>
-                    </div>
-                    <div className="flex items-center">
-                        <span className="text-red-500 text-sm font-medium">-3%</span>
-                        <span className="text-gray-400 text-sm ml-2">from last month</span>
                     </div>
                 </div>
 
@@ -112,16 +122,12 @@ const Dashboard = () => {
                 <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="text-gray-500 text-sm font-medium">Property interests</h3>
-                            <p className="text-2xl font-bold text-gray-800">12.5%</p>
+                            <h3 className="text-gray-500 text-sm font-medium">Total earnings</h3>
+                            <p className="text-2xl font-bold text-gray-800">{dashboardData?.totalPlatformFee || 0}</p>
                         </div>
                         <div className="p-3 bg-orange-50 rounded-lg">
                             <i className="pi pi-home text-xl text-orange-500"></i>
                         </div>
-                    </div>
-                    <div className="flex items-center">
-                        <span className="text-green-500 text-sm font-medium">+2.4%</span>
-                        <span className="text-gray-400 text-sm ml-2">from last month</span>
                     </div>
                 </div>
             </div>

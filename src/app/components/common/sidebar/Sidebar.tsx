@@ -11,7 +11,7 @@ const Sidebar: React.FC<{ isCollapsed: boolean }> = ({
 }) => {
     const location = useLocation();
     const activePath = `/${location?.pathname?.split('/')?.[1]}`
-    console.log("activePath", activePath);
+    // console.log("activePath", activePath);
     
     const [activeItem, setActiveItem] = useState<string>(activePath ? activePath : "dashboard");
     //   const { setUserData } = useAppProvider()

@@ -12,7 +12,16 @@ export const getBookings = async(page:any , limit:any ,search:any ) => {
 
 export const getBookingDetails = async (id: string) => {
     try {
-        const apiRes = await apiService.get(`${Endpoints.GET_BOOKINGS}/${id}`, {});
+        const apiRes = await apiService.get(`${Endpoints.GET_BOOKINGS}/${id}`);
+        return apiRes;
+    } catch (error: any) {
+        throw error
+    }
+}
+
+export const refundBooking = async (body: any) => {
+    try {
+        const apiRes = await apiService.post(`${Endpoints.PAYMENT_REFUND}`, body);
         return apiRes;
     } catch (error: any) {
         throw error

@@ -44,7 +44,7 @@ const Login = () => {
         const { email } = data;
         let payload = {
             purpose: "login",
-            userType: "Admin"
+          
         } as any
 
         if (!email) {

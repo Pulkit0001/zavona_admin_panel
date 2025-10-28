@@ -11,6 +11,7 @@
   border-radius: 0.75rem !important;
   color: white;
   min-width: 6rem;
+  cursor: pointer;
 }
 
 .secondary-button:hover {

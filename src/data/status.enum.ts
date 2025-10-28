@@ -5,5 +5,7 @@ export enum Status {
     BLOCKED = 'blocked',
     PENDING = 'pending',
     REJECTED = 'rejected',
-    PENDING_APPROVAL = "pending_approval"
+    PENDING_APPROVAL = "pending_approval",
+    CANCELLED = 'cancelled',
+    PAID ='paid'
 }
